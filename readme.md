@@ -22,7 +22,8 @@ Opcode Byte:
 
 |
           
-vv
+v     v
+
 1
 #Operands Operation Between R / M ?
 </p>
