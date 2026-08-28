@@ -3,22 +3,32 @@
 MIT License
 
 Alintosh Machine 8-bit is a simple 8-bit machine emulator.
-    Honestly, This machine emulator is a hobby, for testing purposes.
-    I designed it to be similar to "x86" Machines (PCs and Laptops).
-    Similar to x86 means I used Dynamic Instruction Compeletion (DIC).
-    That is because ARM32, ARM64 (AArch64), Thumb Architures imposes upon you Constant Number of Instructions.
-    Max Instruction Size: 2 Bytes.
-    Physical Memory Size: 256 Bytes.
+
+Honestly, This machine emulator is a hobby, for testing purposes.
+
+I designed it to be similar to "x86" Machines (PCs and Laptops).
+
+Similar to x86 means I used Dynamic Instruction Compeletion (DIC).
+
+That is because ARM32, ARM64 (AArch64), Thumb Architures imposes upon you Constant Number of Instructions.
+
+Max Instruction Size: 2 Bytes.
+
+Physical Memory Size: 256 Bytes.
     
 Opcode Byte:
     
 1 1_1_1_1_1 1_1
-    |    |____   |______
-    v         v         v
-    #Operands Operation Between R / M ?
+
+|    |____   |______
+
+v         v         v
+
+#Operands Operation Between R / M ?
 
 if highest bit of Opcode is set and frist bit and second bit of Opcode are cleared, This mean Next byte is Constant (e.g. 3).
-    if highest bit of Opcode is set and frist bit of Opcode is set and second bit of Opcode are cleared and Next byte is smaller than 4,
+
+if highest bit of Opcode is set and frist bit of Opcode is set and second bit of Opcode are cleared and Next byte is smaller than 4,
     This mean Next byte is Register.
     else if Next byte isn't smaller than 4 , This mean "InvalidOpcodeError" (Proccessor exits with exit code 6).
     if highest bit of Opcode is set and frist bit of Opcode is cleared and second bit of Opcode is set,
