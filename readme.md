@@ -16,6 +16,8 @@ Max Instruction Size: 2 Bytes.
 
 Physical Memory Size: 256 Bytes.
 
+v           v         v
+
 n(Operands) Operation Between R / M ?
 
 if highest bit of Opcode is set and frist bit and second bit of Opcode are cleared, This mean Next byte is Constant (e.g. 3).
