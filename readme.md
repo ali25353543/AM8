@@ -16,7 +16,6 @@ Max Instruction Size: 2 Bytes.
 
 Physical Memory Size: 256 Bytes.
 
-v           v         v
 
 n(Operands) Operation Between R / M ?
 
