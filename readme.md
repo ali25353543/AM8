@@ -21,7 +21,6 @@ Opcode Byte:
 1 1_1_1_1_1 1_1
 
 |    |____   |______
-
 v         v         v
 
 #Operands Operation Between R / M ?
