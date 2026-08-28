@@ -15,18 +15,9 @@ That is because ARM32, ARM64 (AArch64), Thumb Architures imposes upon you Consta
 Max Instruction Size: 2 Bytes.
 
 Physical Memory Size: 256 Bytes.
-<p>  
-Opcode Byte:
-    
-1 1_1_1_1_1 1_1
 
-|
-          
-v     v
+n(Operands) Operation Between R / M ?
 
-1
-#Operands Operation Between R / M ?
-</p>
 if highest bit of Opcode is set and frist bit and second bit of Opcode are cleared, This mean Next byte is Constant (e.g. 3).
 
 if highest bit of Opcode is set and frist bit of Opcode is set and second bit of Opcode are cleared and Next byte is smaller than 4,
