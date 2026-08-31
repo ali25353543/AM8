@@ -9,14 +9,7 @@
     That is because ARM32, ARM64 (AArch64), Thumb Architures imposes upon you Constant Number of Instructions.
     Max Instruction Size: 2 Bytes.
     Physical Memory Size: 256 Bytes.
-    
-    Opcode Byte:
-    
-    1 1_1_1_1_1 1_1
-    |    |____   |______
-    v         v         v
-    #Operands Operation Between R / M ?
-
+    n(Operands) Operation Between R / M ?
     if highest bit of Opcode is set and frist bit and second bit of Opcode are cleared, This mean Next byte is Constant (e.g. 3).
     if highest bit of Opcode is set and frist bit of Opcode is set and second bit of Opcode are cleared and Next byte is smaller than 4,
     This mean Next byte is Register.
@@ -26,9 +19,7 @@
     if highest bit of Opcode is set and frist bit and second bit of Opcode are set and Next byte is smaller than 4,
     This mean Next byte is Memory Address but with Register instead of Constant (e.g. [a]).
     if highest bit of Opcode is cleared, This mean Extended Opcode.
-
     Supported Main Opcodes:
-
     mov : 0 (Successful)
     add : 1 (Successful, but don't add (a or [a]) to (a or [a]), because It will add b to a instead.)
     sub : 2 (Successful, but don't subtract (a or [a]) from (a or [a]), because It will subtract b from a instead.)
