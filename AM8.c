@@ -56,7 +56,7 @@
     lod : 4 (Successful, but don't load a to a, because It will load a to itself instead.)
     jmp : 5 (Successful)
     cmp : 6 (Successful)
-    je : 7
+    jcc : 7 - 14 ()
 
 */
 
@@ -156,6 +156,7 @@ int main(int argc, char *argv[]) {
                 if ((opcode_byte & 3) == 0) {
                     mp++;
                     regs[0] -= ram[mp];
+                    mp++;
                     printf("Register A is : %d\n", ((int) regs[0]) & 0xFF);
                 } else if ((opcode_byte & 3) == 1) {
                     if (ram[mp + 1] < 2) {
@@ -182,6 +183,7 @@ int main(int argc, char *argv[]) {
                 if ((opcode_byte & 3) == 0) {
                     mp++;
                     regs[0] = regs[0] * ram[mp];
+                    mp++;
                     printf("Register A is : %d\n", ((int) regs[0]) & 0xFF);
                 } else if ((opcode_byte & 3) == 1) {
                     if (ram[mp + 1] < 2) {
@@ -206,9 +208,8 @@ int main(int argc, char *argv[]) {
                 }
             } else if (((opcode_byte >> 2) & 31) == 4) {
                 if ((opcode_byte & 3) == 0) {
-                    mp++;
-                    regs[0] = ram[mp];
-                    printf("Register A is : %d\n", ((int) regs[0]) & 0xFF);
+                    printf("InvalidOpcodeError\n");
+                    return 6;
                 } else if ((opcode_byte & 3) == 1) {
                     if (ram[mp + 1] < 2) {
                         regs[ram[mp - 1]] = regs[0];
@@ -231,8 +232,8 @@ int main(int argc, char *argv[]) {
                     }
                 }
             } else if (((opcode_byte >> 2) & 31) == 5) {
+                mp++;
                 if ((opcode_byte & 3) == 0) {
-                    mp++;
                     mp = ram[mp];
                     printf("Jumped to : %d\n", ((int) mp) & 0xFF);
                 } else if ((opcode_byte & 3) == 1) {
@@ -244,7 +245,6 @@ int main(int argc, char *argv[]) {
                         return 6;
                     }
                 } else if ((opcode_byte & 3) == 2) {
-                    mp++;
                     mp = ram[ram[mp]];
                     printf("Jumped to : %d\n", ((int) mp) & 0xFF);
                 } else if ((opcode_byte & 3) == 3) {
@@ -257,6 +257,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
             } else if (((opcode_byte >> 2) & 31) == 6) {
+                mp++;
                 if ((opcode_byte & 3) == 0) {
                     if (ram[mp + 1] == regs[0]) {
                         flags |= 1;
@@ -316,81 +317,105 @@ int main(int argc, char *argv[]) {
                         printf("InvalidOpcodeError\n");
                         return 6;
                     }
+                    mp++;
                 } else if (((opcode_byte >> 2) & 31) == 7/*je*/) {
-                    if ((opcode_byte & 3) == 0) {
+                    if ((opcode_byte & 3) == 0 && (flags & 1)) {
                         if (flags & 1) {
                             mp = ram[mp];
                             printf("Jumped to : %d\n", ((int) mp) & 0xFF);
+                        } else {
+                            printf("Not jumped to : %d\n", ((int) mp) & 0xFF);
+                            mp++;
                         }
                     } else {
                         printf("InvalidOpcodeError\n");
                         return 6;
                     }
                 } else if (((opcode_byte >> 2) & 31) == 8 /*jne*/) {
-                    if ((opcode_byte & 3) == 0) {
-                        if (!(flags & 1)) {
-                            mp = ram[mp];
-                            printf("Jumped to : %d\n", ((int) mp) & 0xFF);
+                    mp++;
+                    if ((opcode_byte & 3) == 0 && !(flags & 1)) {
+                        mp = ram[mp];
+                        printf("Jumped to : %d\n", ((int) mp) & 0xFF);
+                    } else {
+                        mp++;
                         }
                     } else {
                         printf("InvalidOpcodeError\n");
                         return 6;
                     }
                 } else if (((opcode_byte >> 2) & 31) == 9 /*jg*/) {
+                    mp++;
                     if ((opcode_byte & 3) == 0) {
                         if (flags & 2) {
                             mp = ram[mp];
                             printf("Jumped to : %d\n", ((int) mp) & 0xFF);
+                        } else {
+                            mp++;
                         }
                     } else {
                         printf("InvalidOpcodeError\n");
                         return 6;
                     }
                 } else if (((opcode_byte >> 2) & 31) == 10 /*jng*/) {
+                    mp++;
                     if ((opcode_byte & 3) == 0) {
                         if (!(flags & 2)) {
                             mp = ram[mp];
                             printf("Jumped to : %d\n", ((int) mp) & 0xFF);
+                        } else {
+                            mp++;
                         }
                     } else {
                         printf("InvalidOpcodeError\n");
                         return 6;
                     }
                 } else if (((opcode_byte >> 2) & 31) == 11 /*js*/) {
+                    mp++;
                     if ((opcode_byte & 3) == 0) {
                         if (flags & 4) {
                             mp = ram[mp];
                             printf("Jumped to : %d\n", ((int) mp) & 0xFF);
+                        } else {
+                            mp++;
                         }
                     } else {
                         printf("InvalidOpcodeError\n");
                         return 6;
                     }
                 } else if (((opcode_byte >> 2) & 31) == 12 /*jns*/) {
+                    mp++;
                     if ((opcode_byte & 3) == 0) {
                         if (!(flags & 4)) {
                             mp = ram[mp];
                             printf("Jumped to : %d\n", ((int) mp) & 0xFF);
+                        } else {
+                            mp++;
                         }
                     } else {
                         printf("InvalidOpcodeError\n");
                         return 6;
                     }
                 } else if (((opcode_byte >> 2) & 31) == 13 /*jge*/) {
+                    mp++;
                     if ((opcode_byte & 3) == 0) {
                         if ((flags & 1) || (flags & 2)) {
                             mp = ram[mp];
                             printf("Jumped to : %d\n", ((int) mp) & 0xFF);
+                        } else {
+                            mp++;
                         }
                     } else {
                         printf("InvalidOpcodeError\n");
                         return 6;
                     }
                 } else if (((opcode_byte >> 2) & 31) == 14 /*jse*/) {
+                    mp++;
                     if ((opcode_byte & 3) == 0) {
                         if ((flags & 1) || (flags & 4)) {
                             mp = ram[mp];
                             printf("Jumped to : %d\n", ((int) mp) & 0xFF);
+                        } else {
+                            mp++;
                         }
                     } else {
                         printf("InvalidOpcodeError\n");
@@ -424,4 +449,3 @@ int main(int argc, char *argv[]) {
         system("cls");
         }
     }
-}
